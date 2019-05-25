@@ -38,34 +38,9 @@ int main()
 		{3, 4, 5, 0, 8, 0, 0, 7, 9}
 	};
 
-	int sudoku1[ROWS][COLS] =
-	{
-		{0, 0, 0, 2, 0, 0, 9, 8, 0},
-		{9, 8, 1, 3, 0, 6, 0, 5, 0},
-		{0, 4, 7, 0, 0, 5, 0, 3, 0},
-		{7, 0, 8, 0, 0, 9, 2, 0, 0},
-		{0, 0, 0, 0, 2, 0, 0, 0, 0},
-		{0, 0, 5, 4, 0, 0, 6, 0, 1},
-		{0, 3, 0, 7, 0, 0, 8, 6, 0},
-		{0, 7, 0, 8, 0, 1, 4, 2, 5},
-		{0, 5, 2, 0, 0, 4, 0, 0, 0}
-	};
-
-	int sudoku3[ROWS][COLS] =
-	{
-		{0, 0, 0, 2, 6, 0, 7, 0, 1},
-		{6, 8, 0, 0, 7, 0, 0, 9, 0},
-		{1, 9, 0, 0, 0, 4, 5, 0, 0},
-		{8, 2, 0, 1, 0, 0, 0, 4, 0},
-		{0, 0, 4, 6, 0, 2, 9, 0, 0},
-		{0, 5, 0, 0, 0, 3, 0, 2, 8},
-		{0, 0, 9, 3, 0, 0, 0, 7, 4},
-		{0, 4, 0, 0, 5, 0, 0, 3, 6},
-		{7, 0, 3, 0, 1, 8, 0, 0, 0}
-	};
-
-
 	playSudoku(sudoku);
+
+	cout << "Sudoku Solver by: Jimmy Morentin and Oscar Garcia" << endl;
 
 	printSudoku(sudoku);
 
@@ -74,40 +49,6 @@ int main()
 	system("pause");
 	return 0;
 }
-// REAL FUNCTION
-/*void playSudoku(int sudokuArray[ROWS][COLS])
-{
-
-	bool flag = false; // Prove puzzle is complete
-	while (!flag) // While there are still blank spaces, cross hatch!
-	{
-		int counter = 0; // TAG
-		for (int x = 0; x < ROWS; x++) // Check for empty spaces, represented by a zero
-		{
-			for (int y = 0; y < COLS; y++)
-			{
-				if (sudokuArray[x][y] == 0)
-				{
-					counter++;
-				}
-			}
-		}
-		cout << counter << endl; // TAG zeroes left
-		if (counter != 0) // If there are blank spaces
-		{
-			for (int z = 1; z < 9 + 1; z++)
-			{
-				crossHatchMarker(sudokuArray, z);
-			}
-		}
-		else if(counter == 0) // No more blank spaces
-		{
-			flag = true;
-		}
-	}
-
-
-}*/
 
 void playSudoku(int sudokuArray[ROWS][COLS])
 {
@@ -133,7 +74,6 @@ void playSudoku(int sudokuArray[ROWS][COLS])
 				else if (x + 1 == ROWS && y + 1 == COLS && sudokuArray[x][y] != 0)
 				{
 					flag = true; // finished
-					cout << "EXECUTED: " << counter << " times" << endl; // TAG
 				}
 			}
 		}
@@ -176,7 +116,6 @@ void crossHatchMarker(int sudokuArray[ROWS][COLS], int num)
 		{
 			if (sudokuArray[x][y] == num) // ROW: [x][0-9] COL: [0-9][y]
 			{
-				cout << "NUM FOUND IN ROW: " << x << "AND COL: " << y << endl;
 				for (int z = 0; z < ROWS; z++) // Mark col 
 				{
 					parSudoku[z][y] = 1;
@@ -190,16 +129,6 @@ void crossHatchMarker(int sudokuArray[ROWS][COLS], int num)
 	}
 
 	cout << endl;
-
-	// Prints Sudoku grid
-	for (int x = 0; x < ROWS; x++)
-	{
-		for (int y = 0; y < COLS; y++)
-		{
-			cout << sudokuArray[x][y] << " ";
-		}
-		cout << endl;
-	}
 
 	// Search for open spaces to place our number
 	for (int x = 0; x < ROWS; x++)
@@ -259,7 +188,7 @@ void crossHatchPlacer(int parArray[ROWS][COLS], int sudokuArray[ROWS][COLS], int
 
 void subGridAnalyzer(int parArray[ROWS][COLS], int sudokuArray[ROWS][COLS], int num, int xLower, int xUpper, int yLower, int yUpper, int xpos, int ypos)
 {
-	//cout << "In subgrid: [" << xLower << "-" << xUpper << "][" << yLower << "-" << yUpper << "]" << endl << endl;
+	
 	int openSpace = 0; // Must be 1 for a number to be placed
 	bool duplicate = false; // Prove there is a duplicate
 	for (int k = xLower; k < (xUpper + 1); k++)
@@ -269,30 +198,19 @@ void subGridAnalyzer(int parArray[ROWS][COLS], int sudokuArray[ROWS][COLS], int 
 			if (parArray[k][l] == 0)
 			{
 				openSpace += 1;
-				//cout << "POTENTIAL OPEN SPACE!" << endl;
-				//cout << "PAR Sudoku box: " << "k: " << k << " l: " << l << " holds: " << sudokuArray[k][l] << endl;
+				
 			}
-			//cout << "Sudoku box: " << "k: " << k << " l: " << l << " holds: " << sudokuArray[k][l] << endl;
+			
 			if (sudokuArray[k][l] == num) // Duplicate found
 			{
 				duplicate = true;
 			}
-
-			//cout << parArray[k][l] << " "; // TAG
-
 		}
-		//cout << endl; // TAG
-	}
-
-	if (duplicate) // TAG
-	{
-		// cout << "Duplicate found!" << endl;
 	}
 
 	if (!duplicate && parArray[xpos][ypos] != 1 && openSpace == 1) // If there is not a duplicate, good to go for our num to be placed there
 	{
 		placeNum(parArray, sudokuArray, num, xpos, ypos);
-		cout << "****" << endl;
 	}
 
 
@@ -301,14 +219,6 @@ void subGridAnalyzer(int parArray[ROWS][COLS], int sudokuArray[ROWS][COLS], int 
 void placeNum(int parArray[ROWS][COLS], int sudokuArray[ROWS][COLS], int num, int xpos, int ypos)
 {
 	sudokuArray[xpos][ypos] = num;
-
-	// Update parArray
-
-
-
-
-	cout << "Num: " << num << " placed @ " << "(" << xpos << ", " << ypos << ")" << endl; //TAG
-	//	cout << "PAR ARRAY @ (" << xpos << ", " << ypos << ") is: " << parArray[xpos][ypos]<< endl;
 }
 
 void printSudoku(int sudokuArray[ROWS][COLS])
@@ -321,7 +231,7 @@ void printSudoku(int sudokuArray[ROWS][COLS])
 		cout << "   -      -      -      -      -      -      -      -      -" << endl;
 		for (int y = 0; y < COLS; y++)
 		{
-				cout << " | " << sudokuArray[x][y] << " | ";
+			cout << " | " << sudokuArray[x][y] << " | ";
 		}
 		cout << endl;
 		if (x + 1 >= ROWS)
